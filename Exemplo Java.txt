@@ -1,0 +1,88 @@
+Exemplo Java:
+
+import java.io.*;
+import java.util.*;
+
+public class GeradorIndice {
+
+    public static void main(String[] args) {
+        // Leitura do arquivo conjunto.txt para obter a lista de documentos da base
+        List<String> documentos = lerDocumento("conjunto.txt");
+
+        // Mapa para armazenar as palavras e suas ocorrências
+        Map<String, List<String>> indice = new HashMap<>();
+
+        // Percorrer cada documento
+        for (int arquivo = 0; arquivo < documentos.size(); arquivo++) {
+            String documento = documentos.get(arquivo);
+
+            // Leitura do conteúdo do documento
+            List<String> linhasDocumento = lerDocumento(documento);
+
+            // Processar as palavras do documento
+            for (String linha : linhasDocumento) {
+                String[] palavras = linha.split(" ");
+                for (String palavra : palavras) {
+                    // Verificar se a palavra não é desconsiderada (implemente sua lógica de filtragem aqui)
+                    if (!Arrays.asList("palavra1", "palavra2", "palavra3").contains(palavra)) {
+                        // Se a palavra já existe no índice, atualizar suas ocorrências
+                        if (indice.containsKey(palavra)) {
+                            indice.get(palavra).add((arquivo + 1) + "," + contarOcorrencias(palavras, palavra));
+                        } else {
+                            // Se a palavra não existe no índice, criar uma nova entrada
+                            List<String> ocorrencias = new ArrayList<>();
+                            ocorrencias.add((arquivo + 1) + "," + contarOcorrencias(palavras, palavra));
+                            indice.put(palavra, ocorrencias);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Escrever o índice no arquivo indice.txt
+        escreverIndice(indice, "indice.txt");
+    }
+
+    private static List<String> lerDocumento(String nomeArquivo) {
+        List<String> linhas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(nomeArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                linhas.add(linha);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return linhas;
+    }
+
+    private static int contarOcorrencias(String[] palavras, String palavra) {
+        int contador = 0;
+        for (String p : palavras) {
+            if (p.equals(palavra)) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    private static void escreverIndice(Map<String, List<String>> indice, String nomeArquivo) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nomeArquivo))) {
+            for (Map.Entry<String, List<String>> entry : indice.entrySet()) {
+                String palavra = entry.getKey();
+                List<String> ocorrencias = entry.getValue();
+
+                StringBuilder sb = new StringBuilder();
+                for (String ocorrencia : ocorrencias) {
+                    sb.append(ocorrencia).append(" ");
+                }
+
+                String linha = palavra + ": " + sb.toString().trim();
+                bw.write(linha);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

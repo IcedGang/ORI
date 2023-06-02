@@ -1,0 +1,33 @@
+Exemplo Python:
+
+# Leitura do arquivo conjunto.txt para obter a lista de documentos da base
+with open('conjunto.txt', 'r') as conjunto_file:
+    documentos = [line.strip() for line in conjunto_file]
+
+# Dicionário para armazenar as palavras e suas ocorrências
+indice = {}
+
+# Percorrer cada documento
+for arquivo, documento in enumerate(documentos, start=1):
+    # Leitura do conteúdo do documento
+    with open(documento, 'r') as doc_file:
+        conteudo = doc_file.read()
+
+    # Processar as palavras do documento
+    palavras = conteudo.split()
+    for palavra in palavras:
+        # Verificar se a palavra não é desconsiderada (implemente sua lógica de filtragem aqui)
+        if palavra not in ['palavra1', 'palavra2', 'palavra3']:
+            # Se a palavra já existe no índice, atualizar suas ocorrências
+            if palavra in indice:
+                indice[palavra].append((arquivo, palavras.count(palavra)))
+            # Se a palavra não existe no índice, criar uma nova entrada
+            else:
+                indice[palavra] = [(arquivo, palavras.count(palavra))]
+
+# Escrever o índice no arquivo indice.txt
+with open('indice.txt', 'w') as indice_file:
+    for palavra, ocorrencias in indice.items():
+        # Converter as ocorrências em uma string no formato "arquivo,ocorrencia"
+        ocorrencias_str = ' '.join([f"{arquivo},{ocorrencia}" for arquivo, ocorrencia in ocorrencias])
+        indice_file.write(f"{palavra}: {ocorrencias_str}\n")
