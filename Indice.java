@@ -12,7 +12,6 @@ public class Indice{
         List<String> strInconsiderate = new ArrayList<String>();  //Lista para guardadar os dados do arquivo desconsiderados(desconsideradas.txt)
         List<String> strQuery = new ArrayList<String>();  //Lista para guardar os dados do arquivo de consulta(consulta.txt)
         List<List<String>> strBaseFile = new ArrayList<List<String>>(); //Lista para guardar os arquivos que estão na lista conjunto.txt
-        List<String> indexList = new ArrayList<String>();
 
         //Contadores
         int countFilesSet = Arqv.readFile(strSet, "conjunto.txt");  //Faz a leitura dos arquivo conjunto.txt
