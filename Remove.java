@@ -2,7 +2,6 @@ import java.util.List;
 
 //Classe para remover caracteres
 public class Remove {
-    
     //Remove caracteres indesejados
     public static String removeChar(String S){
         S = removeSpace(S);
@@ -15,9 +14,9 @@ public class Remove {
     //Remove ponto e vírgula, sem interferir nos arquivos base
     public static List<List<String>> internalRemove(List<List<String>> List, int count1, int[] count2){
         for(int i = 0; i < count1; i++){
-            for(int j = 0; j < count2[i]; j++)
+            for(int j = 0; j < count2[i]; j++){
                 List.get(i).set(j, listRemove(List.get(i).get(j))); 
-            
+            }
         }
 
         return List;
@@ -30,9 +29,10 @@ public class Remove {
 
                 //Compara cada palavra com a lista inteira de palavras desconsideradas (vê se tem como melhorar se n, esquece)
                 for(int k = 0; k < count3; k++){
-                    if(List.get(i).get(j).equals(list2.get(k)))
-                        List.get(i).set(j, "");
-                      
+                    if(List.get(i).get(j).equals(list2.get(k))){
+                        List.get(i).remove(list2.get(k));
+                        count2[i] = count2[i] - 1; //Atualiza o número de palavra do arquivo(pois algumas palavras foram tiradas)
+                    }
                 }
 
             }
