@@ -1,46 +1,50 @@
-//Importa as Classes que vamos usar no programa
+import java.io.*;
 import java.util.*;
-import java.io.IOException;
 
-//Classe Principal
-public class Indice{
-    
-    //Metodo main
+public class Indice {
     public static void main(String[] args) throws IOException{
-        //Listas
-        List<String> strSet = new ArrayList<String>();  //Lista para guardar os dados do arquivo de conjuntos(conjunto.txt)
-        List<String> strInconsiderate = new ArrayList<String>();  //Lista para guardadar os dados do arquivo desconsiderados(desconsideradas.txt)
-        List<String> strQuery = new ArrayList<String>();  //Lista para guardar os dados do arquivo de consulta(consulta.txt)
-        List<List<String>> strBaseFile = new ArrayList<List<String>>(); //Lista para guardar os arquivos que estão na lista conjunto.txt
-
-        //Contadores
-        int countFilesSet = Arqv.readFile(strSet, "conjunto.txt");  //Faz a leitura dos arquivo conjunto.txt
-        int countFilesinconsiderate = Arqv.readFile(strInconsiderate, "desconsideradas.txt");  //Faz a leitura dos arquivo desconsideradas.txt
-        int coutFilesQuery = Arqv.readFile(strQuery, "consulta.txt");  //Faz a leitura dos arquivo consulta.txt
-        int[] count = new int[countFilesSet];  //Array para guardar a quantidade de palavras dos arquivos do arquivo conjunto.txt
-
         
-        //faz a leitura do arquivo conjunto.txt
-        strBaseFile = Arqv.readArqv(strBaseFile, strSet, countFilesSet, count);
+        Map<String, Map<Integer, Integer>> contadorPalavras = new HashMap<>();
+        // Coloque o caminho relativo da sua maquina para identificar os arquivos
+        String nomeArquivoA = "a.txt";
+        String nomeArquivoB = "b.txt";
+        String nomeArquivoC = "c.txt";
+        String arquivoDesconsideradas = "desconsideradas.txt";
+        String arquivoIndice = "indice.txt";
+       
+        // Ler as palavras a serem desconsideradas do arquivo "desconsideradas.txt"
+        Set<String> palavrasDesconsideradas = Arqv.lerPalavrasDesconsideradas(arquivoDesconsideradas);
 
-        //Remove pontos e virgulas
-        strBaseFile = Remove.internalRemove(strBaseFile, countFilesSet, count);
+        // Remover os caracteres ',','!', , '?' dos arquivos a.txt, b.txt e c.txt
+        Remove.removerCaracteresEspeciais(nomeArquivoA);
+        Remove.removerCaracteresEspeciais(nomeArquivoB);
+        Remove.removerCaracteresEspeciais(nomeArquivoC);
 
-        //Remove palavras desconsideradas
-        strBaseFile = Remove.WordRemove(strBaseFile, countFilesSet, count, strInconsiderate, countFilesinconsiderate);
-        
-        //Imprime o indice
-        Print(strBaseFile, countFilesSet, count);
-    }
+        // Ler os arquivos a.txt, b.txt e c.txt
+        Arqv.lerArquivo(nomeArquivoA, contadorPalavras, palavrasDesconsideradas, 1);
+        Arqv.lerArquivo(nomeArquivoB, contadorPalavras, palavrasDesconsideradas, 2);
+        Arqv.lerArquivo(nomeArquivoC, contadorPalavras, palavrasDesconsideradas, 3);
 
-    public static void Print(List<List<String>> List, int count1, int[] count){
-        for(int i = 0; i < count1; i++){
-            for(int j = 0; j < count[i]; j++)
-                System.out.printf("%s\n", List.get(i).get(j)); //Desse jeito podemos acessar os indices da lista de listas, get(i) é um arquivo e get(j) é uma palavra do arquivo
+        // Escrever as palavras, suas contagens e os documentos no arquivo "indice.txt"
+        PrintWriter writer = new PrintWriter(arquivoIndice);
+        for (Map.Entry<String, Map<Integer, Integer>> entry : contadorPalavras.entrySet()) {
+            String palavra = entry.getKey();
+            Map<Integer, Integer> mapaDocumento = entry.getValue();
+            StringBuilder sb = new StringBuilder();
             
-            System.out.printf("\n");
-        }
-    }
+            // Escreve o arquivo em que a palavra foi encontrada e a quantidade de vezes
+            for (Map.Entry<Integer, Integer> documentoEntry : mapaDocumento.entrySet()) {
+                Integer documento = documentoEntry.getKey();
+                Integer quantidade = documentoEntry.getValue();
+                
+                sb.append(documento).append(",").append(quantidade).append(" ");
+            }
 
+            String registros = sb.toString().trim();
+            writer.println(palavra + ": " + registros);
+        }
+
+        writer.close();
+    }
 
 }
