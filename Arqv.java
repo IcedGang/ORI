@@ -1,17 +1,17 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 // Classe para ler os Arquivos
 public class Arqv {
 
-    //Lê o arquivo 'desconsideradas.txt'
-    public static Set<String> lerPalavrasDesconsideradas(String arquivo) throws IOException {
-        Set<String> palavrasDesconsideradas = new HashSet<>();
+    //Lê os arquivos 'desconsideradas.txt' e 'conjunto.txt'
+    public static List<String> lerArquivos(String arquivo) throws IOException {
+        List<String> palavrasDesconsideradas = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(arquivo));
         String linha;
         
@@ -21,12 +21,19 @@ public class Arqv {
         }
         reader.close();
 
-        //Retorna o conjunto com as palavras desconsideradas
+        //Retorna o conjunto com as palavras desconsideradas ou dos arquivos em 'conjunto.txt'
         return palavrasDesconsideradas;
     }
 
-    //Lê os arquivos 'a.txt', 'b.txt', 'c.txt'
-    public static void lerArquivo(String arquivo, Map<String, Map<Integer, Integer>> contadorPalavras, Set<String> palavrasDesconsideradas, int documento) throws IOException {
+    //Lê cada arquivo do conjunto dos arquivos
+    public static void read(List<String> arquivos, Map<String, Map<Integer, Integer>> contadorPalavras, List<String> palavrasDesconsideradas) throws IOException{
+        int count = 1;
+        for (String str : arquivos) 
+            Arqv.lerArquivo(str, contadorPalavras, palavrasDesconsideradas, count++);
+    }
+
+    //Lê os arquivos 
+    private static void lerArquivo(String arquivo, Map<String, Map<Integer, Integer>> contadorPalavras, List<String> palavrasDesconsideradas, int documento) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(arquivo));
         String linha;
         

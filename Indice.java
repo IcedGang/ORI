@@ -3,27 +3,26 @@ import java.util.*;
 
 public class Indice {
     public static void main(String[] args) throws IOException{
-        
+        // Dicionário indice
         Map<String, Map<Integer, Integer>> contadorPalavras = new HashMap<>();
+
         // Coloque o caminho relativo da sua maquina para identificar os arquivos
-        String nomeArquivoA = "a.txt";
-        String nomeArquivoB = "b.txt";
-        String nomeArquivoC = "c.txt";
+        String arquivoConjunto = "conjunto.txt";
+        String arquivoConsulta = "consulta.txt";
         String arquivoDesconsideradas = "desconsideradas.txt";
         String arquivoIndice = "indice.txt";
        
-        // Ler as palavras a serem desconsideradas do arquivo "desconsideradas.txt"
-        Set<String> palavrasDesconsideradas = Arqv.lerPalavrasDesconsideradas(arquivoDesconsideradas);
+        // Lê as palavras a serem desconsideradas do arquivo "desconsideradas.txt"
+        List<String> palavrasDesconsideradas = Arqv.lerArquivos(arquivoDesconsideradas);
 
-        // Remover os caracteres ',','!', , '?' dos arquivos a.txt, b.txt e c.txt
-        Remove.removerCaracteresEspeciais(nomeArquivoA);
-        Remove.removerCaracteresEspeciais(nomeArquivoB);
-        Remove.removerCaracteresEspeciais(nomeArquivoC);
+        // lê o conjunto de arquivos em "conjunto.txt"
+        List<String> arquivos = Arqv.lerArquivos(arquivoConjunto);
 
-        // Ler os arquivos a.txt, b.txt e c.txt
-        Arqv.lerArquivo(nomeArquivoA, contadorPalavras, palavrasDesconsideradas, 1);
-        Arqv.lerArquivo(nomeArquivoB, contadorPalavras, palavrasDesconsideradas, 2);
-        Arqv.lerArquivo(nomeArquivoC, contadorPalavras, palavrasDesconsideradas, 3);
+        // Remover os caracteres [. , ! ?] do conjunto de arquivos 
+        Remove.removeSpecChar(arquivos);
+
+        // lê os arquivos do conjunto arquivos
+        Arqv.read(arquivos, contadorPalavras, palavrasDesconsideradas);
 
         // Escrever as palavras, suas contagens e os documentos no arquivo "indice.txt"
         PrintWriter writer = new PrintWriter(arquivoIndice);
@@ -46,5 +45,7 @@ public class Indice {
 
         writer.close();
     }
+
+
 
 }

@@ -2,11 +2,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class Remove {
     
+    //Percorre todos os arquivos do conjunto
+    public static void removeSpecChar(List<String> arquivos) throws IOException{
+        for (String str : arquivos) 
+            Remove.removerCaracteresEspeciais(str);
+    }
+
     //Remove caracteres especiais
-    public static void removerCaracteresEspeciais(String arquivo)  throws IOException{
+    private static void removerCaracteresEspeciais(String arquivo)  throws IOException{
         BufferedReader reader = new BufferedReader(new FileReader(arquivo));
         StringBuilder conteudo = new StringBuilder();
         String linha;
