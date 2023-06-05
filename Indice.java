@@ -24,7 +24,12 @@ public class Indice {
         // lê os arquivos do conjunto arquivos
         Arqv.read(arquivos, contadorPalavras, palavrasDesconsideradas);
 
-        // Escrever as palavras, suas contagens e os documentos no arquivo "indice.txt"
+        // Monta o Indice
+        printIndex(arquivoIndice, contadorPalavras);
+    }
+
+    // Escrever as palavras, suas contagens e os documentos no arquivo "indice.txt"
+    public static void printIndex(String arquivoIndice, Map<String, Map<Integer, Integer>> contadorPalavras) throws IOException{
         PrintWriter writer = new PrintWriter(arquivoIndice);
         for (Map.Entry<String, Map<Integer, Integer>> entry : contadorPalavras.entrySet()) {
             String palavra = entry.getKey();
@@ -44,8 +49,6 @@ public class Indice {
         }
 
         writer.close();
+        System.out.println("Index created successfully!!");
     }
-
-
-
 }
