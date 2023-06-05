@@ -4,7 +4,7 @@ import java.util.*;
 public class Indice {
     public static void main(String[] args) throws IOException{
         // Dicionário indice
-        Map<String, Map<Integer, Integer>> contadorPalavras = new HashMap<>();
+        Map<String, Map<Integer, Integer>> contadorPalavras = new TreeMap<>();
 
         // Coloque o caminho relativo da sua maquina para identificar os arquivos
         String arquivoConjunto = "conjunto.txt";
