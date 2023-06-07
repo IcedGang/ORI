@@ -32,5 +32,24 @@ public class Remove {
         
         writer.close();
     }
+
+    //Remove palavras desconsideradas
+    public static List<List<String>> WordRemove(List<List<String>> List, int count1, int[] count2, List<String> list2, int count3){
+        for(int i = 0; i < count1; i++){
+            for(int j = 0; j < count2[i]; j++){
+
+                //Compara cada palavra com a lista inteira de palavras desconsideradas (vê se tem como melhorar se n, esquece)
+                for(int k = 0; k < count3; k++){
+                    if(List.get(i).get(j).equals(list2.get(k))){
+                        List.get(i).remove(list2.get(k));
+                        count2[i]--;
+                    }    
+                }
+            }
+        }
+
+        return List;
+    }
+
     
 }

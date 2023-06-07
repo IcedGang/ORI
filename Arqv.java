@@ -2,9 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 // Classe para ler os Arquivos
 public class Arqv {
@@ -45,7 +46,7 @@ public class Arqv {
             //Verifica as palavras desconsideradas
             for (String palavra : palavras) {
                 if (!palavrasDesconsideradas.contains(palavra)) {
-                    contadorPalavras.putIfAbsent(palavra, new HashMap<>());
+                    contadorPalavras.putIfAbsent(palavra, new TreeMap<>());
                     Map<Integer, Integer> mapaDocumento = contadorPalavras.get(palavra);
                     
                     mapaDocumento.put(documento, mapaDocumento.getOrDefault(documento, 0) + 1);
@@ -55,6 +56,34 @@ public class Arqv {
         }
 
         reader.close();
+    }
+
+    //Lê o arquivo consulta.txt
+    //Faz a leitura do arquivo e retorna a quantidade de linhas que ele tem
+    public static int readFile(List<String> str, String fileName) throws IOException{
+        Scanner scn = new Scanner(new FileReader(fileName));
+        String string;
+        int i = 0;
+
+        while(scn.hasNext()){
+            string = scn.next();
+            str.add(string);
+            i++;
+        }
+
+        return i; //Retorna o numero de palavras do arquivo
+    }
+
+    //Faz a leitura do arquivo e guarda na lista de listas
+    public static List<List<String>> readArqv(List<List<String>> Listlist,List<String> list, int count1, int[] count2) throws IOException{
+        for(int i = 0; i < count1; i++){
+            List<String> s = new ArrayList<String>();
+            count2[i] = Arqv.readFile(s, list.get(i)); //Aqui o algoritmo lê um arquivo e salva o numero de palavras dele no vetor count
+
+            Listlist.add(s); //Adicio na lista de listas
+        }
+
+        return Listlist;
     }
 
 }

@@ -6,6 +6,11 @@ public class Indice {
         // Dicionário indice
         Map<String, Map<Integer, Integer>> contadorPalavras = new TreeMap<>();
 
+        // Lista para consulta
+        List<String> strSet = new ArrayList<>();
+        List<List<String>> lista = new ArrayList<List<String>>();
+        File resp = new File("resposta.txt");//Arquivo resposta da consulta
+
         // Coloque o caminho relativo da sua maquina para identificar os arquivos
         String arquivoConjunto = "conjunto.txt";
         String arquivoConsulta = "consulta.txt";
@@ -18,6 +23,16 @@ public class Indice {
         // lê o conjunto de arquivos em "conjunto.txt"
         List<String> arquivos = Arqv.lerArquivos(arquivoConjunto);
 
+        // lê o arquivo "consulta.txt"
+        int countFilesSet = Arqv.readFile(strSet, arquivoConjunto);  //Faz a leitura dos arquivo conjunto.txt
+        int[] count = new int[countFilesSet];
+        List<String> consulta = Arqv.lerArquivos(arquivoConsulta);
+        
+        lista = Arqv.readArqv(lista, strSet, countFilesSet, count);
+        lista = Remove.WordRemove(lista, countFilesSet, count, palavrasDesconsideradas, palavrasDesconsideradas.size());
+        
+        funcoesResposta.preencheArqvResposta(lista, consulta, arquivos, ',');
+
         // Remover os caracteres [. , ! ?] do conjunto de arquivos 
         Remove.removeSpecChar(arquivos);
 
@@ -25,7 +40,9 @@ public class Indice {
         Arqv.read(arquivos, contadorPalavras, palavrasDesconsideradas);
 
         // Monta o Indice
-        printIndex(arquivoIndice, contadorPalavras);
+        //printIndex(arquivoIndice, contadorPalavras);
+
+        System.out.println();
     }
 
     // Escrever as palavras, suas contagens e os documentos no arquivo "indice.txt"
